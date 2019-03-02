@@ -1,17 +1,43 @@
-plugins {
-    id 'java'
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+mainClassName = 'com.company.transfers.Application'
+
+ext {
+    jettyVersion = '9.4.15.v20190215'
+    jerseyVersion = '2.28'
 }
 
-group 'com.company'
-version '1.0-SNAPSHOT'
-
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
+    }
+}
 
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
+/*****************************************************************************
+ * Dependencies
+ *****************************************************************************/
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    /** Jetty **/
+    compile "org.eclipse.jetty:jetty-server:${jettyVersion}"
+    compile "org.eclipse.jetty:jetty-servlet:${jettyVersion}"
+
+    /** Jersey **/
+    compile "org.glassfish.jersey.core:jersey-server:${jerseyVersion}"
+    compile "org.glassfish.jersey.containers:jersey-container-servlet-core:${jerseyVersion}"
+    compile "org.glassfish.jersey.containers:jersey-container-jetty-http:${jerseyVersion}"
+    compile "org.glassfish.jersey.media:jersey-media-json-jackson:${jerseyVersion}"
+    compile "org.glassfish.jersey.inject:jersey-hk2:${jerseyVersion}"
 }
