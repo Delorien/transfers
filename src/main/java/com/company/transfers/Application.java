@@ -1,6 +1,7 @@
 package com.company.transfers;
 
 import com.company.transfers.configuration.JerseyConfiguration;
+import com.company.transfers.configuration.Persistence;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -14,7 +15,15 @@ import static org.eclipse.jetty.servlet.ServletContextHandler.NO_SESSIONS;
 public class Application {
 
     public static void main(String[] args) {
+        setUpEmbeddedDatabase();
+        startServer();
+    }
 
+    private static void setUpEmbeddedDatabase() {
+        Persistence.getInstance().initializeDatabase();
+    }
+
+    private static void startServer() {
         Server server = new Server(8080);
         server.setHandler(getServletContextHandler());
 

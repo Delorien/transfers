@@ -1,6 +1,6 @@
 package com.company.transfers.configuration;
 
-import com.company.transfers.resources.BalanceResource;
+import com.company.transfers.resources.AccountBalanceResource;
 import org.glassfish.jersey.server.ResourceConfig;
 
 /**
@@ -10,7 +10,7 @@ public class JerseyConfiguration extends ResourceConfig {
 
     public JerseyConfiguration() {
         register(new ApplicationBinder());
-        register(BalanceResource.class);
+        register(AccountBalanceResource.class);
         packages("com.company.transfers.resources");
     }
 }
