@@ -8,6 +8,8 @@ import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
+import java.util.List;
+
 /**
  * Created by Leonardo Tonin on 03/03/19.
  */
@@ -25,4 +27,8 @@ public interface TransferDAO {
     @SqlQuery("select * from " + TRANSFER_TABLE + " where id=:id")
     @RegisterConstructorMapper(Transfer.class)
     Transfer findById(@Bind("id") Long id);
+
+    @SqlQuery("select * from " + TRANSFER_TABLE)
+    @RegisterConstructorMapper(Transfer.class)
+    List<Transfer> list();
 }

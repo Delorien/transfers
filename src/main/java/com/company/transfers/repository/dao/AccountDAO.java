@@ -10,6 +10,7 @@ import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Created by Leonardo Tonin on 03/03/19.
@@ -32,4 +33,8 @@ public interface AccountDAO {
     @SqlUpdate("UPDATE " + ACCOUNT_TABLE + " SET balance=:balance where id=:id")
     @RegisterBeanMapper(Account.class)
     Boolean updateBalance(@Bind("balance") BigDecimal balance, @Bind("id") Long id);
+
+    @SqlQuery("select * from " + ACCOUNT_TABLE)
+    @RegisterConstructorMapper(Account.class)
+    List<Account> list();
 }

@@ -9,6 +9,8 @@ import com.company.transfers.service.TransferService;
 import org.modelmapper.ModelMapper;
 
 import javax.inject.Inject;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Leonardo Tonin on 03/03/19.
@@ -38,5 +40,15 @@ public class TransferServiceImpl implements TransferService {
         result.setOrigin(origin);
         result.setReceiver(receiver);
         return result;
+    }
+
+    @Override
+    public TransferDTO get(Long id) {
+        return modelMapper.map(repository.findById(id), TransferDTO.class);
+    }
+
+    @Override
+    public List<TransferDTO> list() {
+        return repository.list().stream().map(transfer -> modelMapper.map(transfer, TransferDTO.class)).collect(Collectors.toList());
     }
 }

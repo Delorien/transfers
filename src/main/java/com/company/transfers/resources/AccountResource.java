@@ -4,9 +4,9 @@ import com.company.transfers.resources.dto.AccountDTO;
 import com.company.transfers.service.AccountService;
 
 import javax.inject.Inject;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
+
+import java.util.List;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -27,5 +27,17 @@ public class AccountResource {
     @Produces(APPLICATION_JSON)
     public AccountDTO add(AccountDTO account) {
         return service.save(account);
+    }
+
+    @GET @Path("/{id}")
+    @Produces(APPLICATION_JSON)
+    public AccountDTO get(@PathParam("id") Long id) {
+        return service.get(id);
+    }
+
+    @GET
+    @Produces(APPLICATION_JSON)
+    public List<AccountDTO> list() {
+        return service.list();
     }
 }
