@@ -8,9 +8,9 @@ import java.math.BigDecimal;
  * Created by Leonardo Tonin on 03/03/19.
  */
 @Data
-public class AccountBalanceDTO {
+public class AccountDTO {
 
     private Long id;
-    private Long accountId;
+    private String document;
     private BigDecimal balance;
 }

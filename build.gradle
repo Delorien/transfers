@@ -8,6 +8,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 mainClassName = 'com.company.transfers.Application'
 
 ext {
+    slf4jVersion = '1.7.26'
     jerseyVersion = '2.28'
     jettyVersion = '9.4.15.v20190215'
     jdbiVersion = '3.6.0'
@@ -33,6 +34,10 @@ repositories {
  * Dependencies
  *****************************************************************************/
 dependencies {
+
+    /** SLF4j **/
+    compile "org.slf4j:slf4j-api:${slf4jVersion}"
+    compile "org.slf4j:slf4j-simple:${slf4jVersion}"
 
     /** Jetty **/
     compile "org.eclipse.jetty:jetty-server:${jettyVersion}"

@@ -2,6 +2,7 @@ package com.company.transfers;
 
 import com.company.transfers.configuration.JerseyConfiguration;
 import com.company.transfers.configuration.Persistence;
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -12,6 +13,7 @@ import static org.eclipse.jetty.servlet.ServletContextHandler.NO_SESSIONS;
 /**
  * Created by Leonardo Tonin on 02/03/19.
  */
+@Slf4j
 public class Application {
 
     public static void main(String[] args) {

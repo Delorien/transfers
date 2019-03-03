@@ -1,6 +1,7 @@
 package com.company.transfers.configuration;
 
-import com.company.transfers.repository.AccountBalanceRepository;
+import com.company.transfers.repository.dao.AccountDAO;
+import com.company.transfers.repository.dao.TransferDAO;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 
@@ -29,7 +30,8 @@ public class Persistence {
     }
 
     public void initializeDatabase() {
-        jdbi.useExtension(AccountBalanceRepository.class, AccountBalanceRepository::createTable);
+        jdbi.useExtension(AccountDAO.class, AccountDAO::createTable);
+        jdbi.useExtension(TransferDAO.class, TransferDAO::createTable);
     }
 
     private Jdbi configureJdbiConnection() {
