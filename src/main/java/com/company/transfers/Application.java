@@ -1,5 +1,6 @@
 package com.company.transfers;
 
+import com.company.transfers.configuration.JerseyConfiguration;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -30,15 +31,8 @@ public class Application {
     private static ServletContextHandler getServletContextHandler() {
         ServletContextHandler servletContextHandler = new ServletContextHandler(NO_SESSIONS);
         servletContextHandler.setContextPath("/");
-        configureApiServlet(servletContextHandler);
+        ServletHolder servletHolder = new ServletHolder(new ServletContainer(new JerseyConfiguration()));
+        servletContextHandler.addServlet(servletHolder, "/api/*");
         return servletContextHandler;
-    }
-
-    private static void configureApiServlet(ServletContextHandler servletContextHandler) {
-        ServletHolder servletHolder = servletContextHandler.addServlet(ServletContainer.class, "/api/*");
-        servletHolder.setInitOrder(0);
-        servletHolder.setInitParameter(
-                "jersey.config.server.provider.packages",
-                "com.company.transfers.resources");
     }
 }
