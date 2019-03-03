@@ -11,6 +11,7 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Leonardo Tonin on 03/03/19.
@@ -28,7 +29,7 @@ public interface AccountDAO {
 
     @SqlQuery("select * from " + ACCOUNT_TABLE + " where id=:id")
     @RegisterConstructorMapper(Account.class)
-    Account findById(@Bind("id") Long id);
+    Optional<Account> findById(@Bind("id") Long id);
 
     @SqlUpdate("UPDATE " + ACCOUNT_TABLE + " SET balance=:balance where id=:id")
     @RegisterBeanMapper(Account.class)

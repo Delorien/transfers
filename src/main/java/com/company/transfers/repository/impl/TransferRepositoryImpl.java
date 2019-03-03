@@ -7,6 +7,7 @@ import org.jdbi.v3.core.Jdbi;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Leonardo Tonin on 03/03/19.
@@ -24,11 +25,11 @@ public class TransferRepositoryImpl implements TransferRepository {
     @Override
     public Transfer save(Transfer transfer) {
         Long id = jdbi.withExtension(CLASS, dao -> dao.insert(transfer));
-        return jdbi.withExtension(CLASS, dao -> dao.findById(id));
+        return jdbi.withExtension(CLASS, dao -> dao.findById(id).get());
     }
 
     @Override
-    public Transfer findById(Long id) {
+    public Optional<Transfer> findById(Long id) {
         return jdbi.withExtension(CLASS, dao -> dao.findById(id));
     }
 

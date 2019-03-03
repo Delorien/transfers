@@ -1,5 +1,6 @@
 package com.company.transfers.service.imp;
 
+import com.company.transfers.exception.TransferNotFoundException;
 import com.company.transfers.repository.TransferRepository;
 import com.company.transfers.repository.model.Transfer;
 import com.company.transfers.resources.dto.AccountDTO;
@@ -44,11 +45,15 @@ public class TransferServiceImpl implements TransferService {
 
     @Override
     public TransferDTO get(Long id) {
-        return modelMapper.map(repository.findById(id), TransferDTO.class);
+        return modelMapper.map(getTransfer(id), TransferDTO.class);
     }
 
     @Override
     public List<TransferDTO> list() {
         return repository.list().stream().map(transfer -> modelMapper.map(transfer, TransferDTO.class)).collect(Collectors.toList());
+    }
+
+    private Transfer getTransfer(Long id) {
+        return repository.findById(id).orElseThrow(TransferNotFoundException::new);
     }
 }

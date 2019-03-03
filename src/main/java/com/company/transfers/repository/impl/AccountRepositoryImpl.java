@@ -7,6 +7,7 @@ import org.jdbi.v3.core.Jdbi;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Leonardo Tonin on 03/03/19.
@@ -24,11 +25,11 @@ public class AccountRepositoryImpl implements AccountRepository {
     @Override
     public Account save(Account account) {
         Long id = jdbi.withExtension(CLASS, dao -> dao.insert(account));
-        return jdbi.withExtension(CLASS, dao -> dao.findById(id));
+        return jdbi.withExtension(CLASS, dao -> dao.findById(id).get());
     }
 
     @Override
-    public Account findById(Long id) {
+    public Optional<Account> findById(Long id) {
         return jdbi.withExtension(CLASS, dao -> dao.findById(id));
     }
 
