@@ -5,10 +5,11 @@ import com.company.transfers.service.AccountService;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
-
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.Response.Status.CREATED;
 
 /**
  * Created by Leonardo Tonin on 03/03/19.
@@ -25,8 +26,8 @@ public class AccountResource {
 
     @POST
     @Produces(APPLICATION_JSON)
-    public AccountDTO add(AccountDTO account) {
-        return service.save(account);
+    public Response add(AccountDTO account) {
+        return Response.status(CREATED).entity(service.save(account)).build();
     }
 
     @GET @Path("/{id}")

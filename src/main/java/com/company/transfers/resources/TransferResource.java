@@ -5,9 +5,11 @@ import com.company.transfers.service.TransferService;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.Response.Status.CREATED;
 
 /**
  * Created by lneto on 02/03/19.
@@ -24,8 +26,8 @@ public class TransferResource {
 
     @POST
     @Produces(APPLICATION_JSON)
-    public TransferDTO create(TransferDTO transferDTO) {
-        return service.create(transferDTO);
+    public Response create(TransferDTO transferDTO) {
+        return Response.status(CREATED).entity(service.create(transferDTO)).build();
     }
 
     @GET @Path("/{id}")
