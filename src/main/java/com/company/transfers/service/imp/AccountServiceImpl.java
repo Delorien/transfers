@@ -28,13 +28,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountDTO save(AccountDTO account) {
+    public AccountDTO save(final AccountDTO account) {
         Account saved = repository.save(modelMapper.map(account, Account.class));
         return modelMapper.map(saved, AccountDTO.class);
     }
 
     @Override
-    public AccountDTO get(Long id) {
+    public AccountDTO get(final Long id) {
         return modelMapper.map(getAccount(id), AccountDTO.class);
     }
 
@@ -44,7 +44,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountDTO removeFromAccount(AccountDTO origin, BigDecimal amount) {
+    public AccountDTO removeFromAccount(final AccountDTO origin, final BigDecimal amount) {
         Account account = getAccount(origin.getId());
         account.setBalance(subtract(account, amount));
         repository.update(account);
@@ -52,18 +52,18 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountDTO chargeInAccount(AccountDTO receiver, BigDecimal amount) {
+    public AccountDTO chargeInAccount(final AccountDTO receiver, final BigDecimal amount) {
         Account account = getAccount(receiver.getId());
         account.setBalance(account.getBalance().add(amount));
         repository.update(account);
         return modelMapper.map(account, AccountDTO.class);
     }
 
-    private Account getAccount(Long id) {
+    private Account getAccount(final Long id) {
         return repository.findById(id).orElseThrow(AccountNotFoundException::new);
     }
 
-    private BigDecimal subtract(Account account, BigDecimal amount) {
+    private BigDecimal subtract(final Account account, final BigDecimal amount) {
         BigDecimal subtract = account.getBalance().subtract(amount);
         if (subtract.compareTo(BigDecimal.ZERO) < 0) {
             throw new InsufficientBalanceException();

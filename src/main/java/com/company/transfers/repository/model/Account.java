@@ -18,7 +18,7 @@ public class Account {
     private BigDecimal balance;
 
     @ConstructorProperties({"id", "document", "balance"})
-    public Account(Long id, String document, BigDecimal balance) {
+    public Account(final Long id, final String document, final BigDecimal balance) {
         this.id = id;
         this.document = document;
         this.balance = balance;

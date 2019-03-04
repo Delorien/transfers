@@ -20,7 +20,7 @@ public interface AccountDAO {
 
     String ACCOUNT_TABLE = "account";
 
-    @SqlUpdate("CREATE TABLE " + ACCOUNT_TABLE + " (id INT PRIMARY KEY AUTO_INCREMENT, document VARCHAR, balance DECIMAL)")
+    @SqlUpdate("CREATE TABLE " + ACCOUNT_TABLE + " (id INT PRIMARY KEY AUTO_INCREMENT, document VARCHAR UNIQUE, balance DECIMAL)")
     void createTable();
 
     @SqlUpdate("INSERT INTO " + ACCOUNT_TABLE + " (document, balance) values (:document, :balance)")

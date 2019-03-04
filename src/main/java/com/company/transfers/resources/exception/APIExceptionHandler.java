@@ -18,7 +18,7 @@ import static org.eclipse.jetty.http.HttpStatus.INTERNAL_SERVER_ERROR_500;
 public class APIExceptionHandler implements ExceptionMapper<Throwable> {
 
     @Override
-    public Response toResponse(Throwable exception) {
+    public Response toResponse(final Throwable exception) {
         Integer httpStatus = INTERNAL_SERVER_ERROR_500;
         APIError error = new APIError(UNEXPECTED_ERROR);
 

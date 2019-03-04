@@ -30,7 +30,7 @@ public class TransferServiceImpl implements TransferService {
     }
 
     @Override
-    public TransferDTO create(TransferDTO transfer) {
+    public TransferDTO create(final TransferDTO transfer) {
 
         AccountDTO origin = accountService.removeFromAccount(transfer.getOrigin(), transfer.getAmount());
         AccountDTO receiver = accountService.chargeInAccount(transfer.getReceiver(), transfer.getAmount());
@@ -44,7 +44,7 @@ public class TransferServiceImpl implements TransferService {
     }
 
     @Override
-    public TransferDTO get(Long id) {
+    public TransferDTO get(final Long id) {
         return modelMapper.map(getTransfer(id), TransferDTO.class);
     }
 
@@ -53,7 +53,7 @@ public class TransferServiceImpl implements TransferService {
         return repository.list().stream().map(transfer -> modelMapper.map(transfer, TransferDTO.class)).collect(Collectors.toList());
     }
 
-    private Transfer getTransfer(Long id) {
+    private Transfer getTransfer(final Long id) {
         return repository.findById(id).orElseThrow(TransferNotFoundException::new);
     }
 }

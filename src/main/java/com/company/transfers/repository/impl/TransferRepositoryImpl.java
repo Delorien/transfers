@@ -23,13 +23,13 @@ public class TransferRepositoryImpl implements TransferRepository {
     }
 
     @Override
-    public Transfer save(Transfer transfer) {
+    public Transfer save(final Transfer transfer) {
         Long id = jdbi.withExtension(CLASS, dao -> dao.insert(transfer));
         return jdbi.withExtension(CLASS, dao -> dao.findById(id).get());
     }
 
     @Override
-    public Optional<Transfer> findById(Long id) {
+    public Optional<Transfer> findById(final Long id) {
         return jdbi.withExtension(CLASS, dao -> dao.findById(id));
     }
 

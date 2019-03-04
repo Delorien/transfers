@@ -19,13 +19,13 @@ import static org.eclipse.jetty.http.HttpStatus.BAD_REQUEST_400;
 @Provider
 public class BeanValidationExceptionHandler implements ExceptionMapper<ConstraintViolationException> {
 
-    public Response toResponse(ConstraintViolationException exception) {
+    public Response toResponse(final ConstraintViolationException exception) {
 
         List<APIError> errors = exception.getConstraintViolations().stream().map(violation -> new APIError(getFormattedFieldPath(violation), violation.getMessage())).collect(Collectors.toList());
         return Response.status(BAD_REQUEST_400).entity(errors).build();
     }
 
-    private String getFormattedFieldPath(ConstraintViolation violation) {
+    private String getFormattedFieldPath(final ConstraintViolation violation) {
         List<String> nodes = getNodes(violation);
 
         if (nodes.size() > 2) {
@@ -35,7 +35,7 @@ public class BeanValidationExceptionHandler implements ExceptionMapper<Constrain
 
     }
 
-    private List<String> getNodes(ConstraintViolation violation) {
+    private List<String> getNodes(final ConstraintViolation violation) {
         List<String> nodes = new ArrayList<>();
         violation.getPropertyPath().forEach(node -> nodes.add(node.getName()));
         return nodes;
