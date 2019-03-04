@@ -22,9 +22,11 @@ public class TransferDTO {
     private Long id;
 
     @Valid
+    @NotNull(groups = TransferGroup.class)
     private AccountDTO origin;
 
     @Valid
+    @NotNull(groups = TransferGroup.class)
     private AccountDTO receiver;
 
     @NotNull(groups = TransferGroup.class)
