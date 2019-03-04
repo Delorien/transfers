@@ -1,4 +1,4 @@
-package com.company.transfers.resources;
+package com.company.transfers.resources.exception;
 
 import com.company.transfers.exception.APIError;
 import com.company.transfers.exception.APIException;
@@ -8,6 +8,7 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 import static com.company.transfers.exception.ErrorMessages.UNEXPECTED_ERROR;
+import static java.util.Arrays.asList;
 import static org.eclipse.jetty.http.HttpStatus.INTERNAL_SERVER_ERROR_500;
 
 /**
@@ -27,7 +28,7 @@ public class APIExceptionHandler implements ExceptionMapper<Throwable> {
         }
 
         return Response.status(httpStatus)
-                .entity(error)
+                .entity(asList(error))
                 .build();
     }
 }
