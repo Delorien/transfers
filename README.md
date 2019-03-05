@@ -38,3 +38,8 @@ java -jar build/libs/transfers.jar
 ./gradlew clean test --info
 ```
 At the end, tests will generate a report on *transfers/build/reports/tests/test/index.html*
+
+### Use Instructions
+* To make a new transfer, first is needed to create accounts.
+* In the Postman collection, you will found the request to create accounts.
+* Then, make a request for transfer money with the accounts id's.
