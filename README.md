@@ -20,6 +20,7 @@ Or import the follow URL directly in Postman https://www.getpostman.com/collecti
 * __[ModelMapper](http://modelmapper.org/)__ & __[Lombok](https://projectlombok.org/)__ - to spicing up the code
 * __[Shadow](https://github.com/johnrengelman/shadow)__ - Gradle plugin for creating fat/uber JARs 
 * __[Karate](https://github.com/intuit/karate)__ - Cucumber based tool for API test-automation
+* __[Hamcrest](http://hamcrest.org/)__ - for writing matcher declaratively on tests
 
 ### How test, pack and run this project
 #### Build and Run
