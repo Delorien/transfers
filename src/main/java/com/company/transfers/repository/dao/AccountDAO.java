@@ -46,7 +46,7 @@ public interface AccountDAO {
     List<Account> list();
 
     @Transaction
-    default Account subtractBalanceFromAcount(BigDecimal amount, Long id) {
+    default Account subtractBalanceFromAccount(BigDecimal amount, Long id) {
         Account account = findByIdLockingForUpdate(id).orElseThrow(AccountNotFoundException::new);
         account.subtractFromBalance(amount);
         updateBalance(account.getBalance(), account.getId());
