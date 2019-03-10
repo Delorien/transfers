@@ -1,5 +1,6 @@
 package com.company.transfers.repository.model;
 
+import com.company.transfers.exception.InsufficientBalanceException;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -22,5 +23,17 @@ public class Account {
         this.id = id;
         this.document = document;
         this.balance = balance;
+    }
+
+    public void subtractFromBalance(final BigDecimal amount) {
+        BigDecimal subtract = this.balance.subtract(amount);
+        if (subtract.compareTo(BigDecimal.ZERO) < 0) {
+            throw new InsufficientBalanceException();
+        }
+        this.balance = subtract;
+    }
+
+    public void chargeToBalance(BigDecimal amount) {
+        this.balance = this.balance.add(amount);
     }
 }

@@ -35,7 +35,7 @@ public class Persistence {
     }
 
     private Jdbi configureJdbiConnection() {
-        Jdbi jdbi = Jdbi.create("jdbc:h2:mem:transfers;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false");
+        Jdbi jdbi = Jdbi.create("jdbc:h2:mem:transfers;MV_STORE=FALSE;LOCK_MODE=1;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false");
         jdbi.installPlugin(new SqlObjectPlugin());
         return jdbi;
     }

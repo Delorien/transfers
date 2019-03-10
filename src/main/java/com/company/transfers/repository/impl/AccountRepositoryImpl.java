@@ -9,6 +9,7 @@ import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.statement.UnableToExecuteStatementException;
 
 import javax.inject.Inject;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +18,7 @@ import java.util.Optional;
  */
 public class AccountRepositoryImpl implements AccountRepository {
 
-    public static final Class<AccountDAO> CLASS = AccountDAO.class;
+    private static final Class<AccountDAO> CLASS = AccountDAO.class;
     private final Jdbi jdbi;
 
     @Inject
@@ -41,13 +42,18 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
-    public Boolean update(final Account account) {
-        return jdbi.withExtension(CLASS, dao -> dao.updateBalance(account.getBalance(), account.getId()));
+    public List<Account> list() {
+        return jdbi.withExtension(CLASS, dao -> dao.list());
     }
 
     @Override
-    public List<Account> list() {
-        return jdbi.withExtension(CLASS, dao -> dao.list());
+    public Account subtractBalanceFromAcount(final BigDecimal amount, final Long id) {
+        return jdbi.inTransaction(handle -> handle.attach(CLASS).subtractBalanceFromAcount(amount, id));
+    }
+
+    @Override
+    public Account chargeBalanceToAccount(final BigDecimal amount, final Long id) {
+        return jdbi.inTransaction(handle -> handle.attach(CLASS).chargeBalanceToAccount(amount, id));
     }
 
     private RuntimeException resolveException(UnableToExecuteStatementException exception) {

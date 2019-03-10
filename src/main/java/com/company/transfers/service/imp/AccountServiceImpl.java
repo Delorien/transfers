@@ -1,7 +1,6 @@
 package com.company.transfers.service.imp;
 
 import com.company.transfers.exception.AccountNotFoundException;
-import com.company.transfers.exception.InsufficientBalanceException;
 import com.company.transfers.repository.AccountRepository;
 import com.company.transfers.repository.model.Account;
 import com.company.transfers.resources.dto.AccountDTO;
@@ -45,29 +44,17 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountDTO removeFromAccount(final AccountDTO origin, final BigDecimal amount) {
-        Account account = getAccount(origin.getId());
-        account.setBalance(subtract(account, amount));
-        repository.update(account);
+        Account account = repository.subtractBalanceFromAcount(amount, origin.getId());
         return modelMapper.map(account, AccountDTO.class);
     }
 
     @Override
     public AccountDTO chargeInAccount(final AccountDTO receiver, final BigDecimal amount) {
-        Account account = getAccount(receiver.getId());
-        account.setBalance(account.getBalance().add(amount));
-        repository.update(account);
+        Account account = repository.chargeBalanceToAccount(amount, receiver.getId());
         return modelMapper.map(account, AccountDTO.class);
     }
 
     private Account getAccount(final Long id) {
         return repository.findById(id).orElseThrow(AccountNotFoundException::new);
-    }
-
-    private BigDecimal subtract(final Account account, final BigDecimal amount) {
-        BigDecimal subtract = account.getBalance().subtract(amount);
-        if (subtract.compareTo(BigDecimal.ZERO) < 0) {
-            throw new InsufficientBalanceException();
-        }
-        return subtract;
     }
 }
