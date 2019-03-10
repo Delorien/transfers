@@ -12,11 +12,9 @@ public interface AccountService {
 
     AccountDTO save(AccountDTO account);
 
-    AccountDTO removeFromAccount(AccountDTO origin, BigDecimal amount);
-
-    AccountDTO chargeInAccount(AccountDTO receiver, BigDecimal amount);
-
     AccountDTO get(Long id);
 
     List<AccountDTO> list();
+
+    void moveAmount(AccountDTO origin, AccountDTO receiver, BigDecimal amount);
 }

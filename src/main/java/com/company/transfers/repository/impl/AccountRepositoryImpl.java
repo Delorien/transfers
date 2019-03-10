@@ -47,13 +47,8 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
-    public Account subtractBalanceFromAcount(final BigDecimal amount, final Long id) {
-        return jdbi.inTransaction(handle -> handle.attach(CLASS).subtractBalanceFromAccount(amount, id));
-    }
-
-    @Override
-    public Account chargeBalanceToAccount(final BigDecimal amount, final Long id) {
-        return jdbi.inTransaction(handle -> handle.attach(CLASS).chargeBalanceToAccount(amount, id));
+    public void moveAmount(final Long originId, final Long receiverId,final BigDecimal amount) {
+        jdbi.useTransaction(handle -> handle.attach(CLASS).moveAmount(amount, receiverId, originId));
     }
 
     private RuntimeException resolveException(final UnableToExecuteStatementException exception) {

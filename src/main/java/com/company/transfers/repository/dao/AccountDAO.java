@@ -22,7 +22,7 @@ public interface AccountDAO {
 
     String ACCOUNT_TABLE = "account";
 
-    @SqlUpdate("CREATE TABLE " + ACCOUNT_TABLE + " (id INT PRIMARY KEY AUTO_INCREMENT, document VARCHAR UNIQUE, balance DECIMAL)")
+    @SqlUpdate("CREATE TABLE IF NOT EXISTS " + ACCOUNT_TABLE + " (id INT PRIMARY KEY AUTO_INCREMENT, document VARCHAR UNIQUE, balance DECIMAL)")
     void createTable();
 
     @SqlUpdate("INSERT INTO " + ACCOUNT_TABLE + " (document, balance) VALUES (:document, :balance)")
@@ -46,18 +46,14 @@ public interface AccountDAO {
     List<Account> list();
 
     @Transaction
-    default Account subtractBalanceFromAccount(BigDecimal amount, Long id) {
-        Account account = findByIdLockingForUpdate(id).orElseThrow(AccountNotFoundException::new);
-        account.subtractFromBalance(amount);
-        updateBalance(account.getBalance(), account.getId());
-        return account;
-    }
+    default void moveAmount(final BigDecimal amount, final Long receiverId, final Long originId) {
+        Account origin = findByIdLockingForUpdate(originId).orElseThrow(AccountNotFoundException::new);
+        Account receiver = findByIdLockingForUpdate(receiverId).orElseThrow(AccountNotFoundException::new);
 
-    @Transaction
-    default Account chargeBalanceToAccount(BigDecimal amount, Long id) {
-        Account account = findByIdLockingForUpdate(id).orElseThrow(AccountNotFoundException::new);
-        account.chargeToBalance(amount);
-        updateBalance(account.getBalance(), account.getId());
-        return account;
+        origin.subtractFromBalance(amount);
+        updateBalance(origin.getBalance(), origin.getId());
+
+        receiver.chargeToBalance(amount);
+        updateBalance(receiver.getBalance(), receiver.getId());
     }
 }

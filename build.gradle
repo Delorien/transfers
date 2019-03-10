@@ -16,6 +16,7 @@ ext {
     modelMapperVersion = '2.3.2'
     lombokVersion = '1.18.6'
     karateVersion = '0.9.1'
+    hamcrestVersion = '2.1'
 }
 
 buildscript {
@@ -69,6 +70,9 @@ dependencies {
     /** Karate **/
     testCompile "com.intuit.karate:karate-junit4:${karateVersion}"
     testCompile "com.intuit.karate:karate-apache:${karateVersion}"
+
+    /** Hamcrest **/
+    testCompile "org.hamcrest:hamcrest:${hamcrestVersion}"
 }
 
 sourceSets {

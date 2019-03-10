@@ -18,7 +18,7 @@ public interface TransferDAO {
 
     String TRANSFER_TABLE = "transfer";
 
-    @SqlUpdate("CREATE TABLE " + TRANSFER_TABLE + " (id INT PRIMARY KEY AUTO_INCREMENT, originId INT, receiverId INT, amount DECIMAL, date DATE)")
+    @SqlUpdate("CREATE TABLE IF NOT EXISTS " + TRANSFER_TABLE + " (id INT PRIMARY KEY AUTO_INCREMENT, originId INT, receiverId INT, amount DECIMAL, date DATE)")
     void createTable();
 
     @SqlUpdate("INSERT INTO " + TRANSFER_TABLE + " (originId, receiverId, amount, date) values (:originId, :receiverId, :amount, CURRENT_TIMESTAMP())")

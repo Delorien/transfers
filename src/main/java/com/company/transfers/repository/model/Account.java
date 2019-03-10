@@ -33,7 +33,7 @@ public class Account {
         this.balance = subtract;
     }
 
-    public void chargeToBalance(BigDecimal amount) {
+    public void chargeToBalance(final BigDecimal amount) {
         this.balance = this.balance.add(amount);
     }
 }

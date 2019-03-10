@@ -43,15 +43,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountDTO removeFromAccount(final AccountDTO origin, final BigDecimal amount) {
-        Account account = repository.subtractBalanceFromAcount(amount, origin.getId());
-        return modelMapper.map(account, AccountDTO.class);
-    }
-
-    @Override
-    public AccountDTO chargeInAccount(final AccountDTO receiver, final BigDecimal amount) {
-        Account account = repository.chargeBalanceToAccount(amount, receiver.getId());
-        return modelMapper.map(account, AccountDTO.class);
+    public void moveAmount(final AccountDTO origin, final AccountDTO receiver, final BigDecimal amount) {
+        repository.moveAmount(origin.getId(), receiver.getId(), amount);
     }
 
     private Account getAccount(final Long id) {

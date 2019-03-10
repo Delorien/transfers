@@ -31,13 +31,13 @@ public class TransferServiceImpl implements TransferService {
 
     @Override
     public TransferDTO create(final TransferDTO transfer) {
+        accountService.moveAmount(transfer.getOrigin(), transfer.getReceiver(), transfer.getAmount());
 
-        AccountDTO origin = accountService.removeFromAccount(transfer.getOrigin(), transfer.getAmount());
-        AccountDTO receiver = accountService.chargeInAccount(transfer.getReceiver(), transfer.getAmount());
+        final AccountDTO origin = accountService.get(transfer.getOrigin().getId());
+        final AccountDTO receiver = accountService.get(transfer.getReceiver().getId());
+        final Transfer saved = repository.save(modelMapper.map(transfer, Transfer.class));
 
-        Transfer saved = repository.save(modelMapper.map(transfer, Transfer.class));
-
-        TransferDTO result = modelMapper.map(saved, TransferDTO.class);
+        final TransferDTO result = modelMapper.map(saved, TransferDTO.class);
         result.setOrigin(origin);
         result.setReceiver(receiver);
         return result;

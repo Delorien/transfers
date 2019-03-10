@@ -13,15 +13,17 @@ import java.math.BigDecimal;
 import java.util.Random;
 import java.util.concurrent.CyclicBarrier;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 /**
  * Created by Leonardo Tonin on 09/03/19.
  */
 @RunWith(JUnit4.class)
-public class ConcurrencyBalanceTest {
+public class ConcurrencyTransferTest {
 
-    private AccountRepository repository = new AccountRepositoryImpl(Persistence.getInstance().getJdbi());
+    private final AccountRepository repository = new AccountRepositoryImpl(Persistence.getInstance().getJdbi());
     private CyclicBarrier barrier;
 
     @BeforeClass
@@ -35,18 +37,19 @@ public class ConcurrencyBalanceTest {
     }
 
     @Test
-    public void concurrentWithdrawMustBePossible() throws InterruptedException {
+    public void concurrentTransferMustBePossible() throws InterruptedException {
 
-        Long id = repository.save(getAccount()).getId();
+        Long originId = repository.save(getOriginAccount()).getId();
+        Long receiverId = repository.save(getReceiverAccount()).getId();
 
         Thread updateA = new Thread(() -> {
             await();
-            repository.subtractBalanceFromAcount(new BigDecimal(100), id);
+            repository.moveAmount(originId, receiverId, new BigDecimal(100));
         });
 
         Thread updateB = new Thread(() -> {
             await();
-            repository.subtractBalanceFromAcount(new BigDecimal(100), id);
+            repository.moveAmount(originId, receiverId, new BigDecimal(50));
         });
 
         updateA.start();
@@ -57,40 +60,24 @@ public class ConcurrencyBalanceTest {
         updateA.join();
         updateB.join();
 
-        BigDecimal finalBalance = repository.findById(id).get().getBalance();
-        assertEquals(new BigDecimal(800), finalBalance);
+        BigDecimal finalOriginBalance = repository.findById(originId).get().getBalance();
+        BigDecimal finalReceiverBalance = repository.findById(receiverId).get().getBalance();
+
+        assertThat(finalOriginBalance, is(equalTo(new BigDecimal(850))));
+        assertThat(finalReceiverBalance, is(equalTo(new BigDecimal(150))));
     }
 
-    @Test
-    public void concurrentChargeMustBePossible() throws InterruptedException {
-        Long id = repository.save(getAccount()).getId();
-
-        Thread updateA = new Thread(() -> {
-            await();
-            repository.chargeBalanceToAccount(new BigDecimal(100), id);
-        });
-
-        Thread updateB = new Thread(() -> {
-            await();
-            repository.chargeBalanceToAccount(new BigDecimal(100), id);
-        });
-
-        updateA.start();
-        updateB.start();
-
-        await();
-
-        updateA.join();
-        updateB.join();
-
-        BigDecimal finalBalance = repository.findById(id).get().getBalance();
-        assertEquals(new BigDecimal(1200), finalBalance);
-    }
-
-    private Account getAccount() {
+    private Account getOriginAccount() {
         Account account = new Account();
         account.setDocument(Integer.toString(new Random().nextInt(90000)));
         account.setBalance(new BigDecimal(1000.0));
+        return account;
+    }
+
+    private Account getReceiverAccount() {
+        Account account = new Account();
+        account.setDocument(Integer.toString(new Random().nextInt(90000)));
+        account.setBalance(new BigDecimal(0.0));
         return account;
     }
 

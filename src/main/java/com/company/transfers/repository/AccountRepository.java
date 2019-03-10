@@ -17,7 +17,5 @@ public interface AccountRepository {
 
     List<Account> list();
 
-    Account subtractBalanceFromAcount(BigDecimal amount, Long id);
-
-    Account chargeBalanceToAccount(BigDecimal amount, Long id);
+    void moveAmount(Long originId, Long receiverId, BigDecimal amount);
 }
